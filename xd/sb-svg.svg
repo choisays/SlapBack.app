@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-Web_1920_1);
+      }
+
+      .cls-2 {
+        fill: #fff;
+        stroke: #707070;
+      }
+
+      .cls-3 {
+        fill: red;
+      }
+
+      .cls-4 {
+        font-size: 100px;
+        font-family: SFCompactRounded-Medium, SF Compact Rounded;
+        font-weight: 500;
+      }
+
+      .cls-5, .cls-6 {
+        fill: #2d9f9f;
+      }
+
+      .cls-6, .cls-7 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+
+      .cls-7 {
+        fill: #006cff;
+        font-size: 103px;
+        font-family: SFCompactRounded-Heavy, SF Compact Rounded;
+        font-weight: 800;
+      }
+
+      .cls-8 {
+        stroke: none;
+      }
+
+      .cls-9 {
+        fill: none;
+      }
+
+      .cls-10 {
+        fill: #141414;
+      }
+    </style>
+    <clipPath id="clip-Web_1920_1">
+      <rect width="1920" height="1080"/>
+    </clipPath>
+  </defs>
+  <g id="Web_1920_1" data-name="Web 1920 – 1" class="cls-1">
+    <rect class="cls-10" width="1920" height="1080"/>
+    <g id="record" transform="translate(599 480.5)">
+      <g id="rect-rec" class="cls-2" transform="translate(0 9.5)">
+        <rect class="cls-8" width="311" height="100"/>
+        <rect class="cls-9" x="0.5" y="0.5" width="310" height="99"/>
+      </g>
+      <path id="Icon_open-media-record" data-name="Icon open-media-record" class="cls-3" d="M35,0A35,35,0,1,0,70,35,34.953,34.953,0,0,0,35,0Z" transform="translate(23.18 24.5)"/>
+      <text id="REC" class="cls-4" transform="translate(104.667 95)"><tspan x="0" y="0">REC</tspan></text>
+    </g>
+    <g id="play" transform="translate(785 288.5)">
+      <g id="rect-play" class="cls-2" transform="translate(0 9.5)">
+        <rect class="cls-8" width="350" height="100"/>
+        <rect class="cls-9" x="0.5" y="0.5" width="349" height="99"/>
+      </g>
+      <text id="PLAY-2" data-name="PLAY" class="cls-4" transform="translate(106.819 95)"><tspan x="0" y="0">PLAY</tspan></text>
+      <path id="Icon_material-play-circle-filled" data-name="Icon material-play-circle-filled" class="cls-5" d="M38,3A35,35,0,1,0,73,38,35.013,35.013,0,0,0,38,3ZM31,53.75V22.25L52,38Z" transform="translate(20.181 21)"/>
+    </g>
+    <g id="stop" transform="translate(1010 480.5)">
+      <g id="rect-stop" class="cls-2" transform="translate(0 9.5)">
+        <rect class="cls-8" width="350" height="100"/>
+        <rect class="cls-9" x="0.5" y="0.5" width="349" height="99"/>
+      </g>
+      <text id="STOP-2" data-name="STOP" class="cls-4" transform="translate(102.99 95)"><tspan x="0" y="0">STOP</tspan></text>
+      <path id="Icon_awesome-stop" data-name="Icon awesome-stop" d="M62.5,2.25H7.5A7.5,7.5,0,0,0,0,9.75v55a7.5,7.5,0,0,0,7.5,7.5h55a7.5,7.5,0,0,0,7.5-7.5v-55A7.5,7.5,0,0,0,62.5,2.25Z" transform="translate(16.01 22.25)"/>
+    </g>
+    <g id="logo" transform="translate(660.412 49.121)">
+      <path id="Icon_metro-multitrack-audio" data-name="Icon metro-multitrack-audio" class="cls-6" d="M33.679,114.151H47.306V32.394H33.679ZM60.932,141.4H74.558V5.141H60.932V141.4ZM6.427,86.9H20.053V59.646H6.427Zm81.757,27.253H101.81V32.394H88.184Zm27.253-54.5V86.9h13.626V59.646Z" transform="translate(-6.427 -5.141)"/>
+      <text id="SlapBack" class="cls-7" transform="translate(144.175 104.187)"><tspan x="0" y="0">SlapBack</tspan></text>
+    </g>
+  </g>
+</svg>

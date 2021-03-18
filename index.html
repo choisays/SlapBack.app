@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Slapback v1.02 - Distributed telematic musicianship</title>
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  	<!-- bootstap and jquery -->
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+	<!-- paper.js and howler.js--> 
+	<script type="text/javascript" src="paper-full.js"></script>
+	<script type="text/javascript" src="howl/howler.js"></script>
+	
+	<!-- link style sheet -->
+	<link href='SF-Compact-Rounded-Medium.otf' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="main.css">
+	
+</head>
+<body>
+
+<!-- HTML top buttons -->
+<div class="btn-group btn-group-justified">
+
+	<!-- Button: LOGO -->
+	<a href="#" class="btn btn-logo" id="staging"><center><b><u></b></u></center><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 603.636 138.262">
+		<g id="logo" transform="translate(1 1)">
+		  <text id="SlapBack" transform="translate(144.636 104.187)" fill="#006cff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" font-size="103" font-family="SF Compact Rounded" font-weight="800"><tspan x="0" y="0">SlapBack</tspan></text>
+		  <path id="Icon_metro-multitrack-audio" data-name="Icon metro-multitrack-audio" d="M33.679,114.151H47.306V32.394H33.679ZM60.932,141.4H74.558V5.141H60.932V141.4ZM6.427,86.9H20.053V59.646H6.427Zm81.757,27.253H101.81V32.394H88.184Zm27.253-54.5V86.9h13.626V59.646Z" transform="translate(-6.427 -5.141)" fill="#2d9f9f" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+		</g>
+	</svg></a>
+
+	<!-- Button: PLAY -->
+    <a href="#" class="btn btn-primary" id="play"><svg id="play" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 350 119">
+		<g id="rect-play" transform="translate(0 9.5)" fill="#fff" fill-opacity="0">
+		  <rect width="350" height="100" stroke="none"/>
+		  <rect x="0.5" y="0.5" width="349" height="99" fill="none"/>
+		</g>
+		<text id="PLAY-2" data-name="PLAY" transform="translate(106.819 95)" font-size="100" fill="#fff" stroke="#000" stroke-width="1" font-family="SFCompactRounded-Medium, SF Compact Rounded" font-weight="500"><tspan x="0" y="0">PLAY</tspan></text>
+		<path id="Icon_material-play-circle-filled" data-name="Icon material-play-circle-filled" d="M38,3A35,35,0,1,0,73,38,35.013,35.013,0,0,0,38,3ZM31,53.75V22.25L52,38Z" transform="translate(20.181 21)" fill="#2d9f9f" stroke="#000" stroke-width="1"/>
+	</svg></a>
+	
+	<!-- Button: RECORD -->
+    <a href="#" class="btn btn-primary" id="record"><svg id="record" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 311 119">
+		<g id="rect-rec" transform="translate(0 9.5)" fill="#fff" fill-opacity="0">
+			<rect width="311" height="100" stroke="none"/>
+			<rect x="0.5" y="0.5" width="310" height="99" fill="none"/>
+		</g>
+		<text id="REC" transform="translate(104.667 95)" font-size="100" font-family="SFCompactRounded-Medium, SF Compact Rounded" font-weight="500" fill="#fff" stroke="#000" stroke-width="1"><tspan x="0" y="0">REC</tspan></text>
+		<path id="Icon_open-media-record" data-name="Icon open-media-record" d="M35,0A35,35,0,1,0,70,35,34.953,34.953,0,0,0,35,0Z" transform="translate(23.18 24.5)" fill="red" stroke="#000000" stroke-width="1"/>
+	</svg></a>
+	
+	<!-- Button: STOP -->
+    <a href="#" class="btn btn-primary" id="stop"><svg id="stop" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 350 119">
+		<g id="rect-stop" transform="translate(0 9.5)" fill="#fff" fill-opacity="0">
+		  <rect width="350" height="100" stroke="none"/>
+		  <rect x="0.5" y="0.5" width="349" height="99" fill="none"/>
+		</g>
+		<text id="STOP-2" data-name="STOP" transform="translate(102.99 95)" font-size="100" font-family="SFCompactRounded-Medium, SF Compact Rounded" font-weight="500" fill="#fff" stroke="#000" stroke-width="1"><tspan x="0" y="0">STOP</tspan></text>
+		<path id="Icon_awesome-stop" data-name="Icon awesome-stop" d="M62.5,2.25H7.5A7.5,7.5,0,0,0,0,9.75v55a7.5,7.5,0,0,0,7.5,7.5h55a7.5,7.5,0,0,0,7.5-7.5v-55A7.5,7.5,0,0,0,62.5,2.25Z" transform="translate(16.01 22.25)"/>
+	</svg></a>
+	
+	<!-- Button: DELETE 
+    <a href="#" class="btn btn-primary" id="erase">DELETE</a>
+	-->
+</div>
+
+
+
+
+<canvas id="myCanvas" resize></canvas>
+<script type="text/paperscript" canvas="myCanvas">
+	
+// recording buttons
+var play = document.getElementById("play");
+var record = document.getElementById("record");
+var stop = document.getElementById("stop");
+// var erase = document.getElementById("erase");
+
+// initial global variables
+var shouldRecord;
+var recordArray = [];
+var circles = [];
+var start;
+var recordTimes = {};
+var count = 0;
+
+// KEYPRESS BUFFER LOGIC
+// runs on every key press
+function onKeyDown(event) {
+	// only for keyboard keys a-z
+	if (keyData[event.key]) {
+		
+		// if user has pressed record button
+		if(shouldRecord) {
+		
+			// record time between key presses and reset start
+			calculateTime();
+		
+			// save key push into the recordArray and increment the count for recordTimes
+			recordArray.push(event.key);
+			count++;
+		}
+		// VISUAL CODE
+		// calculate max window size and define a new point within it
+		var point = calculatePoint();
+		// create a new circle at that point, assign its color and sound, and save into array
+		animateCircle(point);
+	}
+}
+
+// VISUAL CODE
+// runs on every frame
+function onFrame(event){
+	// loop through array, change colors and shrink circle until gone
+	for (var i = 0; i < circles.length; i++) {
+		circles[i].fillColor.hue += 1;
+		circles[i].scale(.9);
+		// if circle has disappeared, remove from array
+		if (circles[i].area < 1) {
+			circles[i].remove();
+			circles.splice(i,1);
+			i--;
+		}
+	}
+}
+
+// TIME LOGIC
+function calculateTime() {
+	console.log("count: " + count);
+
+	recordTimes[count] = {};
+	recordTimes[count][event.key] = Date.now() - start;
+	start = Date.now();
+
+	console.log("recordTimes: " + recordTimes);
+}
+
+// VISUAL CODE
+function calculatePoint() {
+	var maxPoint = new Point(view.size.width, view.size.height);
+	var randomPoint = Point.random();
+	return maxPoint * randomPoint;
+}
+
+// VISUAL CODE
+function animateCircle(point) {
+	var newCircle = new Path.Circle(point, 500);
+	newCircle.fillColor = keyData[event.key].color;
+	keyData[event.key].sound.play();
+	circles.push(newCircle);
+}
+
+// RETRIEVE SAVED RECORDINGS 
+function getSavedRecordings() {
+	console.log("getSavedRecordings recordArray length: " + recordArray.length)
+	if (recordArray.length < 1) {
+		// get saved records
+		var strSavedRecordArray = getRecordArray();
+		console.log("saved recordArray from file: " + strSavedRecordArray);
+		recordArray = JSON.parse(strSavedRecordArray);
+
+		var strSavedRecordTimes = getRecordTimes();
+		console.log("saved recordTimes from file: " + strSavedRecordTimes);
+		recordTimes = JSON.parse(strSavedRecordTimes);
+
+		count = recordArray.length
+	}
+}
+
+// --- BUTTON: RECORD LOGIC ---
+// on click of record button
+record.addEventListener("click", function() {
+
+	// get saved recordings
+	if (recordArray.length < 1) {
+		getSavedRecordings()
+	}
+	
+	// start playing first so initial silence doesn't increment with each user's recording(s)
+	// playRecording();
+	shouldRecord = true;
+	start = Date.now();
+});
+
+// --- BUTTON: STOP LOGIC ---
+// on click of stop button
+stop.addEventListener("click", function() {
+	shouldRecord = false;
+	// dc: add code to save buffer as file here
+	saveRecordings()
+});
+
+// --- BUTTON: PLAY LOGIC ---
+// on click of play button
+play.addEventListener("click", function() {
+	playRecording();
+});
+
+// --- BUTTON: DELETE LOGIC ---
+// on click of delete button
+//erase.addEventListener("click", function() {
+//	deleteRecording();
+//});
+
+// HISTORY RETRIEVAL - getRecordTimes.php
+function getRecordTimes(){
+	var strUrl = "https://slapback.app/storage/getRecordTimes.php", strReturn = "";
+
+	jQuery.ajax({
+	  url: strUrl,
+	  success: function(html) {
+		strReturn = html;
+	  },
+	  async:false
+	});
+  
+	console.log("getRecordTimes: " + strReturn);
+	return strReturn;
+}
+
+// HISTORY RETRIEVAL - getRecordArray.php
+function getRecordArray(){
+	var strUrl = "https://slapback.app/storage/getRecordArray.php", strReturn = "";
+
+	jQuery.ajax({
+	  url: strUrl,
+	  success: function(html) {
+		strReturn = html;
+	  },
+	  async:false
+	});
+  
+	console.log("getRecordArray: " + strReturn);
+	return strReturn;
+}
+
+// SAVE CURRENT SONG TO ARCHIVE
+function saveRecordings()
+{
+	// save records to files
+	var strRecordArray = JSON.stringify(recordArray);
+	console.log("Saving RecordArray serialized: " + strRecordArray);
+	
+	var strRecordTimes = JSON.stringify(recordTimes);
+	console.log("Saving RecordTimes serialized: " + strRecordTimes);
+
+	saveRecordArray(strRecordArray);
+	saveRecordTimes(strRecordTimes);
+}
+
+// TRIGGER CURRENT SONG SAVE - saveRecordArray.php
+function saveRecordArray(savedata){
+	var strUrl = "https://slapback.app/storage/saveRecordArray.php";
+
+	console.log("saveRecordArray: " + savedata);
+
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("POST", strUrl);
+	xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	xmlhttp.send(savedata);
+	
+	/*
+	jQuery.ajax({
+	  type: "POST"
+	  url: strUrl,
+	  data: data
+	  async: false
+	});
+	*/
+}
+
+// TRIGGER CURRENT SONG SAVE - saveRecordTimes.php
+function saveRecordTimes(savedata){
+	var strUrl = "https://slapback.app/storage/saveRecordTimes.php";
+
+	console.log("saveRecordTimes: " + savedata);
+
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.open("POST", strUrl);
+	xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	xmlhttp.send(savedata);
+}
+
+// SONG PLAYBACK LOGIC
+// plays recording with exact timing of original input
+function playRecording() {
+
+	console.log("recordArray length: " + recordArray.length)
+
+	if (recordArray.length < 1) {
+		getSavedRecordings()
+	}
+	
+	console.log("Playing recordArray: " + recordArray);
+	console.log("Playing recordTimes: " + recordTimes);
+
+	var offset = 0;
+	var index = 0;
+	
+	// loop through each element of recordArray and play it
+	recordArray.forEach(function(element) {
+		// play each sound after recorded amount of time
+		setTimeout(function(){
+			keyData[element].sound.play();
+		}, offset + recordTimes[index][element]);
+		offset += recordTimes[index][element];
+		index++;
+	});	
+
+}
+
+// DELETE RECORDING LOGIC
+// deletes recordArray and timing array
+//function deleteRecording() {
+//	recordArray = [];
+//	recordTimes = {};
+//	count = 0;
+//}
+
+// KEYBOARD AND SOUNDS LOGIC
+// keyboard sound and color mapping
+var keyData = {
+	q: {
+		color: "#f44242",
+		sound: new Howl({
+			src: ['sounds/bubbles.mp3']
+		})
+	},
+	w: {
+		color: "#f46e41",
+		sound: new Howl({
+			src: ['sounds/clay.mp3']
+		})
+	},
+	e: {
+		color: "#f49a41",
+		sound: new Howl({
+			src: ['sounds/confetti.mp3']
+		})
+	},
+	r: {
+		color: "#f4c441",
+		sound: new Howl({
+			src: ['sounds/corona.mp3']
+		})
+	},
+	t: {
+		color: "#eef441",
+		sound: new Howl({
+			src: ['sounds/dotted-spiral.mp3']
+		})
+	},
+	y: {
+		color: "#caf441",
+		sound: new Howl({
+			src: ['sounds/flash-1.mp3']
+		})
+	},
+	u: {
+		color: "#a0f441",
+		sound: new Howl({
+			src: ['sounds/flash-2.mp3']
+		})
+	},
+	i: {
+		color: "#58f441",
+		sound: new Howl({
+			src: ['sounds/flash-3.mp3']
+		})
+	},
+	o: {
+		color: "#41f45e",
+		sound: new Howl({
+			src: ['sounds/glimmer.mp3']
+		})
+	},
+	p: {
+		color: "#41f49d",
+		sound: new Howl({
+			src: ['sounds/moon.mp3']
+		})
+	},
+	a: {
+		color: "#41f4d9",
+		sound: new Howl({
+			src: ['sounds/pinwheel.mp3']
+		})
+	},
+	s: {
+		color: "#41d9f4",
+		sound: new Howl({
+			src: ['sounds/piston-1.mp3']
+		})
+	},
+	d: {
+		color: "#41a0f4",
+		sound: new Howl({
+			src: ['sounds/piston-2.mp3']
+		})
+	},
+	f: {
+		color: "#4182f4",
+		sound: new Howl({
+			src: ['sounds/piston-3.mp3']
+		})
+	},
+	g: {
+		color: "#4161f4",
+		sound: new Howl({
+			src: ['sounds/prism-1.mp3']
+		})
+	},
+	h: {
+		color: "#4641f4",
+		sound: new Howl({
+			src: ['sounds/prism-2.mp3']
+		})
+	},
+	j: {
+		color: "#6141f4",
+		sound: new Howl({
+			src: ['sounds/prism-3.mp3']
+		})
+	},
+	k: {
+		color: "#7f41f4",
+		sound: new Howl({
+			src: ['sounds/splits.mp3']
+		})
+	},
+	l: {
+		color: "#9a41f4",
+		sound: new Howl({
+			src: ['sounds/squiggle.mp3']
+		})
+	},
+	z: {
+		color: "#c141f4",
+		sound: new Howl({
+			src: ['sounds/strike.mp3']
+		})
+	},
+	x: {
+		color: "#e241f4",
+		sound: new Howl({
+			src: ['sounds/suspension.mp3']
+		})
+	},
+	c: {
+		color: "#f441e5",
+		sound: new Howl({
+			src: ['sounds/timer.mp3']
+		})
+	},
+	v: {
+		color: "#f441be",
+		sound: new Howl({
+			src: ['sounds/ufo.mp3']
+		})
+	},
+	b: {
+		color: "#f441a6",
+		sound: new Howl({
+			src: ['sounds/veil.mp3']
+		})
+	},
+	n: {
+		color: "#f4417f",
+		sound: new Howl({
+			src: ['sounds/wipe.mp3']
+		})
+	},
+	m: {
+		color: "#f44141",
+		sound: new Howl({
+			src: ['sounds/zig-zag.mp3']
+		})
+	}
+};	
+
+</script>
+<!-- dc: Virtual keyboard -->
+<!-- 
+TODO:
+
+- Remove excess timing from beginning of new recordings 
+	- Add a timer that starts when recording is clicked and stops when key is pressed
+	- Remove that timed duration from each new recorded song's beginning
+	- This is so you can listen to the most recent master song before recording but not have that length of dead time appended between the old master and new master
+
+- Move saved master archives to storage folder
+- Add Instrument Selection Logic
+	- Load instrument logic using loading of var keyData
+	- Add sound sustain logic?
+	- Instruments:
+		- Piano
+
+-->
+</body>
+</html>
